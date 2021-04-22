@@ -67,9 +67,38 @@ def train(model, train_loader, epochs, optimizer, loss_fn, device):
     device       - Where the model and data should be loaded (gpu or cpu).
     """
     
-    # TODO: Paste the train() method developed in the notebook here.
+        model.train()
+        total_loss = 0
+        running_loss = 0.0
+        for i, batch in enumerate(train_loader, 0):
+        #for batch in train_loader:         
+            batch_X, batch_y = batch
+                   
+            batch_X = batch_X.to(device)
+            batch_y = batch_y.to(device)
+            
+            # TODO: Complete this train method to train the model provided.
+            # get the inputs; data is a list of [inputs, labels]
+            #inputs, labels = train_loader
 
-    pass
+            # zero the parameter gradients
+            optimizer.zero_grad()
+
+            # forward + backward + optimize
+            outputs = model(batch_X)
+            loss = loss_fn(outputs, batch_y)
+            loss.backward()
+            optimizer.step()
+
+            # print statistics
+            total_loss += loss.data.item()
+
+
+
+            
+            
+        print("Epoch: {}, BCELoss: {}".format(epoch, total_loss / len(train_loader)))
+    print('Finished Training')
 
 
 if __name__ == '__main__':
